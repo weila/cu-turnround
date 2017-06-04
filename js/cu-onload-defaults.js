@@ -1,1 +1,1 @@
-jQuery(document).ready(function($){$('.cu_turnround_default').TurnRound({'use':'img'});});
+jQuery(document).ready(function($){$('.cu-turnround-default').TurnRound();});

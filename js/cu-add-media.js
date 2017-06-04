@@ -14,8 +14,8 @@ jQuery(function($) {
      
             var self = this; // Needed to retrieve our variable in the anonymous function below
             this.window.on('select', function() {
-                    var first = self.window.state().get('selection').first().toJSON();
-                    wp.media.editor.insert('[myshortcode id="' + first.id + '"]');
+                    var mediaInfo = self.window.state().get('selection').first().toJSON();
+                    wp.media.editor.insert('<div class="cu-turnround-default" style="background:url('+mediaInfo.url+');width:20%;padding-bottom:20%;"></div>');
                 });
         }
      
