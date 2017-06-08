@@ -9,22 +9,25 @@
 ;(function($, window, document, undefined) {
     var  isMoving = false; 
     var TurnRound = function (el,opts) {
-    	//assigning params
+        //assigning params
         this.$ = el;
         this.defaults = {
             'use': 'bg',
-            'speed': 5,
-            'total': 24
+            'speed': 10,
+            'row': 4,
+            'col': 6
         }; 
 
-        this.params = $.extend({}, this.defaults, opts);  	
-        this.total = this.params.total;
+        this.params = $.extend({}, this.defaults, opts);    
+        this.row = this.params.row;
+        this.col = this.params.col;
         this.speed = parseInt(100 / this.params.speed);
         this.use = this.params.use;
         this.picIdx = 0;
 
-    	this.currentX = 0;
-    	this.currentImage = 0;
+        this.currentX = 0;
+        this.currentImageX = 0;
+        this.currentImageY = 0;
 
 
         
@@ -34,9 +37,10 @@
     };
 
         TurnRound.prototype.initPic = function() {
+            var bgSize = this.col * 100;
             if(this.use == 'bg' || this.use == 'background' || this.use == 'background-image'){
                 this.$.css({
-                  'background-size': '100%',
+                  'background-size': bgSize + '%',
                   'background-position': '0 0',
                   'background-repeat': 'no-repeat'
                 });
@@ -52,11 +56,11 @@
             var that = this;
             this.$.mousedown(function(target) {
                 isMoving = true;
-                this.currentX=target.pageX - this.offsetLeft;
+                that.currentX=target.pageX - this.offsetLeft;
             });
 
             $(document).mouseup(function() {
-                isMoving = false
+                isMoving = false;
             });
 
             this.$.mousemove(function(target) {
@@ -65,12 +69,15 @@
                 }
             });
 
-            this.$.on("touchstart", function() {
-                isMoving = true
+            this.$.on("touchstart", function(target) {
+                target.preventDefault();
+                var actualTouch = target.originalEvent.touches[0] || target.originalEvent.changedTouches[0];
+                isMoving = true;
+                that.currentX=actualTouch.pageX - this.offsetLeft;
             });
 
             $(document).on("touchend", function() {
-                isMoving = false
+                isMoving = false;
             });
 
             this.$.on("touchmove", function(target) {
@@ -84,16 +91,30 @@
         };
 
         TurnRound.prototype.setImage = function (newX) {
-            var showPos = 0,
-                unit = 100 / (this.total-1),
+            var xPos = 0,
+                yPos = 0,
+                xUnit = 100 / (this.col-1),
+                yUnit = 100 / (this.row-1),
                 height = 100;
-                    if (this.currentX - newX > this.speed ) {
+
+                var diff = this.currentX - newX;
+                var dir = (diff < 0) ? 'left' : 'right';
+
+                var distance = Math.abs(this.currentX - newX);
+                    if (dir == "left" && distance > this.speed ) {
                         this.currentX = newX;
-                        this.currentImage = --this.currentImage < 0 ? this.total-1 : this.currentImage;
-                        showPos = this.currentImage * unit;
+                        //this.currentImage = --this.currentImage < 0 ? this.total-1 : this.currentImage;
+                        this.currentImageX = --this.currentImageX;
+                        if(this.currentImageX<0){
+                            this.currentImageX = this.col-1;
+                            this.currentImageY = --this.currentImageY < 0 ? this.row-1 : this.currentImageY;
+                        }
+
+                        showPosX = this.currentImageX * xUnit;
+                        showPosY = this.currentImageY * yUnit;
 
                         if(this.use == 'bg' || this.use == 'background' || this.use == 'background-image'){
-                            this.$.css({"background-position": '0% ' + showPos +'%'});
+                            this.$.css({"background-position": showPosX + '% ' + showPosY +'%'});
                         }else if(this.use == 'img' || this.use == 'image'){
                             this.$.css({
                                 "clip": 'rect('+ this.currentImage * height +'px,100px,' + (this.currentImage + 1) * height +'px,0)',
@@ -102,13 +123,19 @@
 
                         }
 
-                    } else if (this.currentX - newX < -this.speed) {
+                    } else if (dir == "right" && distance > this.speed ) {
                         this.currentX = newX;
-                        this.currentImage = ++this.currentImage > this.total-1 ? 0 : this.currentImage;
-                        showPos = this.currentImage * unit;
+                        // this.currentImage = ++this.currentImage > this.total-1 ? 0 : this.currentImage;
+                        this.currentImageX = ++this.currentImageX;
+                        if(this.currentImageX > this.col-1){
+                            this.currentImageX = 0;
+                            this.currentImageY = ++this.currentImageY > this.row-1 ? 0 : this.currentImageY
+                        }
+                        showPosX = this.currentImageX * xUnit;
+                        showPosY = this.currentImageY * yUnit;
 
                         if(this.use == 'bg' || this.use == 'background' || this.use == 'background-image'){                
-                            this.$.css({"background-position": '0% ' + showPos +'%'});
+                            this.$.css({"background-position": showPosX + '% ' + showPosY +'%'});
                         }else if(this.use == 'img' || this.use == 'image'){
                             this.$.css({
                                 "clip": 'rect('+ this.currentImage * height +'px,100px,' + (this.currentImage + 1) * height +'px,0)',
@@ -128,4 +155,4 @@
     });
 
  
-})(jQuery, window, document);
+})($,window, document);
