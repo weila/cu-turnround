@@ -15,11 +15,25 @@ jQuery(function($) {
             var self = this; // Needed to retrieve our variable in the anonymous function below
             this.window.on('select', function() {
                     var mediaInfo = self.window.state().get('selection').first().toJSON();
-                    wp.media.editor.insert('<div class="cu-turnround-default" style="background:url('+mediaInfo.url+');width:400px;padding-bottom:300px;"></div>');
+                    wp.media.editor.insert('<img class="cu-turnround-temp-image" src='+mediaInfo.url+'>');
+                    setImgSize(mediaInfo.url);
                 });
         }
      
         this.window.open();
         return false;
+    };
+
+    function setImgSize (url) {
+        var width,height;
+        var size ={};
+        var imgObj = new Image();
+        imgObj.src = url;
+        imgObj.onload=function(){
+            size.width = imgObj.width / 6;
+            size.height = imgObj.height / 4;
+            //$('.cu-turnround-temp-image').remove();
+            wp.media.editor.insert('<div class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px"></div>');
+        };
     }
 });
