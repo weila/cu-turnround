@@ -15,7 +15,6 @@ jQuery(function($) {
             var self = this; // Needed to retrieve our variable in the anonymous function below
             this.window.on('select', function() {
                     var mediaInfo = self.window.state().get('selection').first().toJSON();
-                    wp.media.editor.insert('<img class="cu-turnround-temp-image" src='+mediaInfo.url+'>');
                     setImgSize(mediaInfo.url);
                 });
         }
@@ -32,8 +31,7 @@ jQuery(function($) {
         imgObj.onload=function(){
             size.width = imgObj.width / 6;
             size.height = imgObj.height / 4;
-            //$('.cu-turnround-temp-image').remove();
-            wp.media.editor.insert('<div class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px"></div>');
+            wp.media.editor.insert('<img class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px">');
         };
     }
 });
