@@ -31,7 +31,7 @@ jQuery(function($) {
         imgObj.onload=function(){
             size.width = imgObj.width / 6;
             size.height = imgObj.height / 4;
-            wp.media.editor.insert('<img class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px">');
+            wp.media.editor.insert('<img class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px"/>');
         };
     }
 });

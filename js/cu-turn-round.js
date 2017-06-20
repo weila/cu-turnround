@@ -42,7 +42,10 @@
                 this.$.css({
                   'background-size': bgSize + '%',
                   'background-position': '0 0',
-                  'background-repeat': 'no-repeat'
+                  'background-repeat': 'no-repeat',
+                  'animation': 'none',
+                  '-webkit-animation': 'none',
+                  '-moz-animation': 'none'
                 });
             }else if(this.use == 'img' || this.use == 'image'){
                 this.$.css({
