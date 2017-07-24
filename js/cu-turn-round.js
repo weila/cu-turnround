@@ -29,9 +29,6 @@
         this.currentImageX = 0;
         this.currentImageY = 0;
 
-
-        
-
         this.initPic();
         this.assignOperations();
     };
@@ -40,12 +37,12 @@
             var bgSize = this.col * 100;
             if(this.use == 'bg' || this.use == 'background' || this.use == 'background-image'){
                 this.$.css({
-                  'background-size': bgSize + '%',
-                  'background-position': '0 0',
-                  'background-repeat': 'no-repeat',
-                  'animation': 'none',
-                  '-webkit-animation': 'none',
-                  '-moz-animation': 'none'
+                    'background-size': bgSize + '%',
+                    'background-position': '0 0',
+                    'background-repeat': 'no-repeat',
+                    'animation': 'none',
+                    '-webkit-animation': 'none',
+                    '-moz-animation': 'none'
                 });
             }else if(this.use == 'img' || this.use == 'image'){
                 this.$.css({

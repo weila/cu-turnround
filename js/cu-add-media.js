@@ -24,14 +24,13 @@ jQuery(function($) {
     };
 
     function setImgSize (url) {
-        var width,height;
         var size ={};
         var imgObj = new Image();
         imgObj.src = url;
         imgObj.onload=function(){
             size.width = imgObj.width / 6;
             size.height = imgObj.height / 4;
-            wp.media.editor.insert('<img class="cu-turnround-default" style="background: url('+ url +');width:'+size.width +'px;height:'+size.height +'px"/>');
+            wp.media.editor.insert('<img class="cu-turnround-default" data-cuturnroundow="' + size.width + '" data-cuturnroundoh="' + size.height + '" style="background: url('+ url +');width:' + size.width + 'px;height:' + size.height + 'px"/>');
         };
     }
 });

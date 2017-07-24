@@ -22,7 +22,23 @@ add_action('wp_enqueue_scripts', 'cu_add_turnround');
 add_action('media_buttons', 'add_my_media_button');
 
 function add_my_media_button() {
-    echo '<a href="#" id="insert-my-media" class="button">Add my media</a>';
+    echo '<a href="#" id="insert-my-media" class="button">Add a 3D image</a>';
 }
+
+function cu_add_editor_style(){
+    add_editor_style( plugins_url('css/editor.css', __FILE__) );
+}
+add_action( 'admin_init', 'cu_add_editor_style' );
+
+if(!function_exists('allow_data_event_content')){
+      function allow_data_event_content() {
+          global $allowedposttags, $allowedtags;
+          $attrdatacuw = "data-cuturnroundow";
+          $attrdatacuh = "data-cuturnroundoh";
+          $allowedposttags["img"][$attrdatacuw][$attrdatacuh] = true;
+          $allowedtags["img"][$attrdatacuw][$attrdatacuh] = true;
+          }
+  }
+add_action( 'init', 'allow_data_event_content' );
 
 ?>
